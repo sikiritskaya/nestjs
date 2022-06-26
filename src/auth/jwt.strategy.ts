@@ -1,6 +1,7 @@
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-jwt";
 import { Request as RequestType } from 'express';
+import { jwtConstants } from "./constans";
 
 const cookieExtractor = (req: RequestType): string | null => {
     let jwt = null; 
@@ -17,7 +18,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         super({
             jwtFromRequest: cookieExtractor,
             ignoreExpiration: false,
-            secretOrKey: process.env.SECRET_KEY
+            secretOrKey: jwtConstants.secret,
+            
         })
     }
 
