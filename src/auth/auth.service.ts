@@ -1,14 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { createUserDto } from 'src/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
-//import { MailService} from './mail.service'
 import * as bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt'
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UserService, private jwtService: JwtService) {}
+    constructor(private userService: UserService, private jwtService: JwtService, private mailService: MailService) {}
 
     async signUp( userDto: createUserDto){
         const existingUser = await this.userService.findByEmail(userDto.email);
@@ -22,7 +22,7 @@ export class AuthService {
         const confirmationCode = uuidv4();
         try {
             const user = await this.userService.signUp({ ...userDto, password: hashPassword, confirmationCode });
-            //await this.mailService.sendActivationMail(userDto.email, userDto.username, confirmationCode);
+            await this.mailService.sendActivationMail(userDto.email, userDto.username, confirmationCode);
             return user;
         }
         catch (e) {

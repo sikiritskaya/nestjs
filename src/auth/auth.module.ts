@@ -5,9 +5,11 @@ import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   imports: [UserModule,
+    MailModule,
     PassportModule,
     JwtModule.register({
     secret: process.env.SECRET_KEY,
