@@ -1,5 +1,7 @@
+import { User } from "src/user/user.model";
+
 export class createPostDto{
     readonly title: string;
     readonly body: string; 
-    readonly userId: number
+    readonly userId: User;
 }

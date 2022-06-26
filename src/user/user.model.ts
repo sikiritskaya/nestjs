@@ -6,20 +6,20 @@ export type UserDocument = User & Document;
 @Schema()
 export class User {
 
-    @Prop({type: String, required:true, unique: true})
+    @Prop({ type: String, required: true, unique: true })
     username: string;
 
-    @Prop({type: String, required:true})
+    @Prop({ type: String, required: true })
     password: string;
 
-    @Prop({type: String, required:true, unique: true})
+    @Prop({ type: String, required: true, unique: true })
     email: string;
 
-    @Prop({type: Boolean, default: false})
+    @Prop({ type: Boolean, default: false })
     isActive: boolean;
 
     @Prop()
-    confirmationCode: string
+    confirmationCode: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
