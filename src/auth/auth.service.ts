@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { createUserDto } from 'src/dto/create-user.dto';
-import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt'
+import { createUserDto } from 'src/dto/create-user.dto';
+import { UserService } from 'src/user/user.service';
 import { MailService } from 'src/mail/mail.service';
+import { User } from 'src/user/user.model';
 
 @Injectable()
 export class AuthService {
@@ -29,23 +30,19 @@ export class AuthService {
             console.log(e.message);
         }
     }
-  
-    logout(userDto: createUserDto) {
-            
-    }
    
-    activate(){
-
+    activate(link:string): Promise<User>{
+        return this.userService.activateAccount(link)
     }
 
     async signIn(userDto: createUserDto){
         const user = await this.userService.findByName(userDto.username);
         const validPassword = await bcrypt.compare(userDto.password, user.password);
         if (!user || !validPassword) {
-            throw new Error('The user or password is incorrect');
+            throw new HttpException('The user or password is incorrect', HttpStatus.BAD_REQUEST);
         }
         if (!user.isActive) {
-            throw new Error('Pending Account. Please verify your email.');
+            throw new HttpException('Pending Account. Please verify your email.', HttpStatus.FORBIDDEN);
         }
         return this.generateJwt(user)
         

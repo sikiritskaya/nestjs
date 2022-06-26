@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpCode, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from 'mongoose';
 import { User, UserDocument } from './user.model';
@@ -31,5 +31,15 @@ export class UserService {
      
     async findByName(username: string): Promise<User> {
         return await this.userModel.findOne({username})
+    }
+
+    async activateAccount(link: string): Promise<User>{
+        const user = await this.userModel.findOne({ link });
+        if (!user) {
+            throw new HttpException('user did not exist', HttpStatus.BAD_REQUEST)
+        }
+        user.isActive = true;
+        await user.save();
+        return user;
     }
 }

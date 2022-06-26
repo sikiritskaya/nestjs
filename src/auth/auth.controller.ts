@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { createUserDto } from 'src/dto/create-user.dto';
 import { AuthService } from './auth.service';
@@ -12,11 +12,13 @@ export class AuthController {
         return this.authService.signUp(userDto)
     }
     @Post('/sign-out')
-    logout(@Body() userDto: createUserDto) {
-            
+    logout(@Res() res: Response, @Body() userDto: createUserDto) {
+        return res.clearCookie('token') 
     }
     @Get('/activate/:link')
-    activate(){}
+    activate(@Param('link') link:string){
+        return this.authService.activate(link)
+    }
 
     @Post('/sign-in')
     signIn(@Res() res: Response, @Body() userDto:createUserDto){
