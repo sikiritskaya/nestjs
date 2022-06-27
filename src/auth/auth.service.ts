@@ -23,7 +23,7 @@ export class AuthService {
         const confirmationCode = uuidv4();
         try {
             const user = await this.userService.signUp({ ...userDto, password: hashPassword, confirmationCode });
-            await this.mailService.sendActivationMail(userDto.email, userDto.username, confirmationCode);
+            await this.mailService.sendActivationMail(userDto.email, userDto.username, confirmationCode).catch(e=>console.log(e));
             return user;
         }
         catch (e) {
@@ -44,15 +44,16 @@ export class AuthService {
         if (!user.isActive) {
             throw new HttpException('Pending Account. Please verify your email.', HttpStatus.FORBIDDEN);
         }
+        
         return this.generateJwt(user)
-
     }
 
     private async generateJwt(user: any) {
-        const payload = { username: user.username, sub: user._id };
+        const payload = { username: user.username, sub: user.id };
 
         return {
             access_token: this.jwtService.sign(payload),
+            user
         };
     }
 }

@@ -5,29 +5,32 @@ import { AuthService } from './auth.service';
 
 @Controller('/api/auth')
 export class AuthController {
-    constructor(private authService: AuthService){}
+    constructor(private authService: AuthService) { }
 
     @Post('/sign-up')
-    async signUp(@Res() res: Response, @Body() userDto: createUserDto){
-        const newUser = this.authService.signUp(userDto);
-        return res.status(HttpStatus.CREATED).json({newUser})
+    async signUp(@Body() userDto: createUserDto) {
+        return this.authService.signUp(userDto);
     }
 
     @Post('/sign-out')
     logout(@Res() res: Response) {
-        return res.clearCookie('token') 
+        res.clearCookie('token')
+        return res.send('Exit')
     }
 
     @Get('/activate/:link')
-    activate(@Param('link') link:string){
+    activate(@Param('link') link: string) {
         return this.authService.activate(link)
     }
 
     @Post('/sign-in')
-    signIn(@Res() res: Response, @Body() userDto:createUserDto){
-        const access_token = this.authService.signIn(userDto);
-        return res.cookie('token', access_token,
-        { httpOnly: true, maxAge: /* process.env.TOKEN_EXPIRATEION_INTERVAL_HOURS */ 24 * 1000 * 60 * 60 })
+    async signIn(@Body() userDto: createUserDto, @Res() res: Response) {
+        const token = await this.authService.signIn(userDto);
+
+        res.cookie('token', token.access_token,
+            { httpOnly: true, maxAge: +process.env.TOKEN_EXPIRATEION_INTERVAL_HOURS * 1000 * 60 * 60 })
+
+        return res.send(token.user)
     }
 
 }

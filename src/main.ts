@@ -1,10 +1,10 @@
-import { ConfigModule } from '@nestjs/config';
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import * as passport from 'passport';
 import { AppModule } from './app.module';
 
-const PORT = process.env.Port || 8000;
+const PORT = 3333
 
 const startApp = async () => {
   try {

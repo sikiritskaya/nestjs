@@ -4,7 +4,7 @@ import { createPostDto } from 'src/dto/create-post.dto';
 import { PostService } from './post.service';
 
 @Controller('/api')
-//@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class PostController {
     constructor(private postService: PostService){}
 

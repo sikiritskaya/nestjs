@@ -1,19 +1,17 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Put, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { createUserDto } from 'src/dto/create-user.dto';
 import { UserService } from './user.service';
 
 @Controller('/api')
-//@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class UserController {
     constructor(private userService: UserService) { }
 
     @Get('/user')
-    getAllUsers(/* @Res() response */) {
-        const users = this.userService.getAllUsers();
-        return users //response.status(HttpStatus.OK).json({ users })
-
+    getAllUsers() {
+        return this.userService.getAllUsers();
     }
 
     @Delete('/user/:id')

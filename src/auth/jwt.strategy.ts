@@ -4,13 +4,7 @@ import { Request as RequestType } from 'express';
 import { jwtConstants } from "./constants";
 
 const cookieExtractor = (req: RequestType): string | null => {
-    let jwt = null; 
-
-    if (req && req.cookies) {
-        jwt = req.cookies['token'];
-    }
-
-    return jwt;
+    return req && req.cookies ? req.cookies['token'] : null 
 };
 
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -19,11 +13,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             jwtFromRequest: cookieExtractor,
             ignoreExpiration: false,
             secretOrKey: jwtConstants.secret,
-            
         })
     }
 
     async validate(payload: any) {
-        return {username: payload.username}
+        return { username: payload.username }
     }
 }

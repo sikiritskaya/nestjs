@@ -17,12 +17,9 @@ export class UserService {
         return await this.userModel.find().populate({ path: 'posts', select: 'title body' });
     }
 
-    async update(dto: createUserDto, id: string): Promise<User> {   //user?
+    async update(dto: createUserDto, id: string): Promise<User> {
         return await this.userModel.findByIdAndUpdate(id, dto, { new: true })
     }
-    /* async update(user: UserDocument): Promise<User> {   //user?
-        return await this.userModel.findByIdAndUpdate(user._id, user, { new: true })
-    } */
 
     async delete(id: string): Promise<any> {
         return await this.userModel.findByIdAndDelete(id);

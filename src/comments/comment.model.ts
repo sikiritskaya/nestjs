@@ -14,7 +14,7 @@ export class Comment {
     @Prop({type: String, required:true})
     body: string;
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }] })
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, required:true, ref: 'Post' }] })
     postId: Post;
 }
 
