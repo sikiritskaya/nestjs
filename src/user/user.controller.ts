@@ -5,14 +5,14 @@ import { createUserDto } from 'src/dto/create-user.dto';
 import { UserService } from './user.service';
 
 @Controller('/api')
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 export class UserController {
     constructor(private userService: UserService) { }
 
     @Get('/user')
-    getAllUsers(@Res() response: Response) {
+    getAllUsers(/* @Res() response */) {
         const users = this.userService.getAllUsers();
-        return response.status(HttpStatus.OK).json({ users })
+        return users //response.status(HttpStatus.OK).json({ users })
 
     }
 

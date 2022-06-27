@@ -14,7 +14,7 @@ export class UserService {
     }
 
     async getAllUsers(): Promise<User[]> {
-        return await this.userModel.find().exec();
+        return await this.userModel.find().populate({ path: 'posts', select: 'title body' });
     }
 
     async update(dto: createUserDto, id: string): Promise<User> {   //user?

@@ -18,6 +18,13 @@ export class Post {
     userId: User;
 }
 
-
 export const PostSchema = SchemaFactory.createForClass(Post);
 
+PostSchema.virtual('comments', {
+    ref: 'Comment', 
+    localField: '_id', 
+    foreignField: 'postId'
+});
+
+PostSchema.set('toObject', { virtuals: true });
+PostSchema.set('toJSON', { virtuals: true });
