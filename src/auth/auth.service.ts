@@ -9,9 +9,9 @@ import { User } from 'src/user/user.model';
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UserService, private jwtService: JwtService, private mailService: MailService) {}
+    constructor(private userService: UserService, private jwtService: JwtService, private mailService: MailService) { }
 
-    async signUp( userDto: createUserDto){
+    async signUp(userDto: createUserDto) {
         const existingUser = await this.userService.findByEmail(userDto.email);
         const existingUserByName = await this.userService.findByName(userDto.username);
         if (existingUser && existingUserByName) {
@@ -30,12 +30,12 @@ export class AuthService {
             console.log(e.message);
         }
     }
-   
-    activate(link:string): Promise<User>{
+
+    activate(link: string): Promise<User> {
         return this.userService.activateAccount(link)
     }
 
-    async signIn(userDto: createUserDto){
+    async signIn(userDto: createUserDto) {
         const user = await this.userService.findByName(userDto.username);
         const validPassword = await bcrypt.compare(userDto.password, user.password);
         if (!user || !validPassword) {
@@ -45,10 +45,10 @@ export class AuthService {
             throw new HttpException('Pending Account. Please verify your email.', HttpStatus.FORBIDDEN);
         }
         return this.generateJwt(user)
-        
+
     }
 
-    private async generateJwt(user: any){
+    private async generateJwt(user: any) {
         const payload = { username: user.username, sub: user._id };
 
         return {

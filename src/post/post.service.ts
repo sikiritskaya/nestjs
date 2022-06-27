@@ -10,7 +10,7 @@ export class PostService {
     constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
 
     async getAll(): Promise<Post[]> {
-        return await this.postModel.find();
+        return await this.postModel.find().exec();
     }
     async create(post: createPostDto): Promise<Post> {
         const newPost = await this.postModel.create(post)

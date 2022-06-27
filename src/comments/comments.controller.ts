@@ -4,7 +4,7 @@ import { createCommentDto } from 'src/dto/create-comment.dto';
 import { CommentsService } from './comments.service';
 
 @Controller('/api')
-@UseGuards(new JwtAuthGuard('jwt'))
+//@UseGuards(new JwtAuthGuard('jwt'))
 export class CommentsController {
     constructor(private commentService: CommentsService){}
     @Get('/comments')
