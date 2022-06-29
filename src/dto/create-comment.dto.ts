@@ -1,6 +1,6 @@
 import { Post } from "src/post/post.model";
 
-export class createCommentDto {
+export class CreateCommentDto {
     readonly author: string;
     readonly body: string;
     readonly postId: Post;

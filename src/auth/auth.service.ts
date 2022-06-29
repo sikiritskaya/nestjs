@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt'
-import { createUserDto } from 'src/dto/create-user.dto';
+import { CreateUserDto } from 'src/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
 import { MailService } from 'src/mail/mail.service';
 import { User } from 'src/user/user.model';
@@ -14,7 +14,7 @@ export class AuthService {
         this.logger = new Logger()
     }
 
-    async signUp(userDto: createUserDto) {
+    async signUp(userDto: CreateUserDto) {
         const existingUser = await this.userService.findByEmail(userDto.email);
         const existingUserByName = await this.userService.findByName(userDto.username);
         if (existingUser && existingUserByName) {
@@ -38,7 +38,7 @@ export class AuthService {
         return this.userService.activateAccount(link)
     }
 
-    async signIn(userDto: createUserDto) {
+    async signIn(userDto: CreateUserDto) {
         const user = await this.userService.findByName(userDto.username);
         const validPassword = await bcrypt.compare(userDto.password, user.password);
         if (!user || !validPassword) {

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { createUserDto } from 'src/dto/create-user.dto';
+import { CreateUserDto } from 'src/dto/create-user.dto';
 import { AuthService } from './auth.service';
 
 @Controller('/api/auth')
@@ -8,7 +8,7 @@ export class AuthController {
     constructor(private authService: AuthService) { }
 
     @Post('/sign-up')
-    async signUp(@Body() userDto: createUserDto) {
+    async signUp(@Body() userDto: CreateUserDto) {
         return this.authService.signUp(userDto);
     }
 
@@ -24,7 +24,7 @@ export class AuthController {
     }
 
     @Post('/sign-in')
-    async signIn(@Body() userDto: createUserDto, @Res() res: Response) {
+    async signIn(@Body() userDto: CreateUserDto, @Res() res: Response) {
         const token = await this.authService.signIn(userDto);
 
         res.cookie('token', token.access_token,

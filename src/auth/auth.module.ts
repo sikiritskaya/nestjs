@@ -15,7 +15,7 @@ import { jwtConstants } from './constants';
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: {
-        expiresIn: '1d' //`${process.env.TOKEN_EXPIRATEION_INTERVAL_HOURS}h`
+        expiresIn: `${process.env.TOKEN_EXPIRATEION_INTERVAL_HOURS}h`
       }
     })
   ],

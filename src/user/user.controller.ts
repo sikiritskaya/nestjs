@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Put, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { createUserDto } from 'src/dto/create-user.dto';
+import { CreateUserDto } from 'src/dto/create-user.dto';
 import { UserService } from './user.service';
 
 @Controller('/api')
@@ -21,7 +21,7 @@ export class UserController {
     }
 
     @Put('/user/:id')
-    async updateUser(@Res() response: Response, @Body() dto: createUserDto, @Param('id') id: string) {
+    async updateUser(@Res() response: Response, @Body() dto: CreateUserDto, @Param('id') id: string) {
         const updatedUser = await this.userService.update(dto, id);
         return response.status(HttpStatus.OK).json({ updatedUser })
     }

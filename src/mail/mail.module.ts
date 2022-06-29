@@ -15,9 +15,9 @@ import { MailService } from './mail.service';
                     pass: process.env.MY_PASS,
                 },
             },
-            /* defaults: {
+            defaults: {
                 from: '"No Reply" <noreply@example.com>',
-            }, */
+            },
             template: {
                 dir: join(__dirname, 'templates'),
                 adapter: new HandlebarsAdapter(),
