@@ -15,14 +15,14 @@ export class UserController {
     }
 
     @Delete('/user/:id')
-    deleteUser(@Res() response: Response, @Param('id') id: string) {
-        const deletedUser = this.userService.delete(id);
+    async deleteUser(@Res() response: Response, @Param('id') id: string) {
+        const deletedUser = await this.userService.delete(id);
         return response.status(HttpStatus.OK).json({ deletedUser })
     }
 
     @Put('/user/:id')
-    updateUser(@Res() response: Response, @Body() dto: createUserDto, @Param('id') id: string) {
-        const updatedUser = this.userService.update(dto, id);
+    async updateUser(@Res() response: Response, @Body() dto: createUserDto, @Param('id') id: string) {
+        const updatedUser = await this.userService.update(dto, id);
         return response.status(HttpStatus.OK).json({ updatedUser })
     }
 

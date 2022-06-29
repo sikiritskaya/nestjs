@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt'
@@ -9,7 +9,10 @@ import { User } from 'src/user/user.model';
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UserService, private jwtService: JwtService, private mailService: MailService) { }
+    logger: Logger
+    constructor(private userService: UserService, private jwtService: JwtService, private mailService: MailService) { 
+        this.logger = new Logger()
+    }
 
     async signUp(userDto: createUserDto) {
         const existingUser = await this.userService.findByEmail(userDto.email);
@@ -27,7 +30,7 @@ export class AuthService {
             return user;
         }
         catch (e) {
-            console.log(e.message);
+            this.logger.error(e.message);
         }
     }
 
