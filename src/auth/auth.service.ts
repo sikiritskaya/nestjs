@@ -26,7 +26,7 @@ export class AuthService {
 
         const confirmationCode = uuidv4();
         try {
-            const user = await this.userService.signUp({ ...userDto, password: hashPassword, confirmationCode, salt });
+            const user = await this.userService.signUp({ ...userDto, password: hashPassword, confirmationCode });
             await this.mailService.sendActivationMail( userDto.username, userDto.email, confirmationCode);
             return user;
         }
@@ -42,6 +42,7 @@ export class AuthService {
     async signIn(userDto: CreateUserDto) {
         const user = await this.userService.findByName(userDto.username);
         const validPassword = await bcrypt.compare(userDto.password, user.password);
+        
         if (!user || !validPassword) {
             throw new HttpException('The user or password is incorrect', HttpStatus.BAD_REQUEST);
         }

@@ -17,12 +17,14 @@ export class UserController {
     @Delete('/user/:id')
     async deleteUser(@Res() response: Response, @Param('id') id: string) {
         const deletedUser = await this.userService.delete(id);
+        
         return response.status(HttpStatus.OK).json({ deletedUser })
     }
 
     @Put('/user/:id')
     async updateUser(@Res() response: Response, @Body() dto: CreateUserDto, @Param('id') id: string) {
         const updatedUser = await this.userService.update(dto, id);
+
         return response.status(HttpStatus.OK).json({ updatedUser })
     }
 

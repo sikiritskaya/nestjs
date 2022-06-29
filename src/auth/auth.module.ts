@@ -6,14 +6,13 @@ import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
 import { JwtStrategy } from './jwt.strategy';
 import { MailModule } from 'src/mail/mail.module';
-import { jwtConstants } from './constants';
 
 @Module({
   imports: [UserModule,
     MailModule,
     PassportModule,
     JwtModule.register({
-      secret: jwtConstants.secret,
+      secret: process.env.SECRET_KEY,
       signOptions: {
         expiresIn: `${process.env.TOKEN_EXPIRATEION_INTERVAL_HOURS}h`
       }

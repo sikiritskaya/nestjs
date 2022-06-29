@@ -10,6 +10,7 @@ export class UserService {
 
     async signUp(dto: CreateUserDto): Promise<User> {
         const newUser = new this.userModel(dto);
+
         return newUser.save();
     }
 
@@ -40,6 +41,7 @@ export class UserService {
         }
         user.isActive = true;
         await user.save();
+
         return user;
     }
 }
