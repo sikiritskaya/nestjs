@@ -20,6 +20,9 @@ export class User {
 
     @Prop()
     confirmationCode: string;
+
+    @Prop()
+    salt: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

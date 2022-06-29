@@ -21,12 +21,13 @@ export class AuthService {
             throw new HttpException('such user exists', HttpStatus.BAD_REQUEST);
         }
 
-        const hashPassword = await bcrypt.hash(userDto.password, 5);
+        const salt = await bcrypt.genSalt(+process.env.SALTROUNDS)
+        const hashPassword = await bcrypt.hash(userDto.password, salt);
 
         const confirmationCode = uuidv4();
         try {
-            const user = await this.userService.signUp({ ...userDto, password: hashPassword, confirmationCode });
-            await this.mailService.sendActivationMail(userDto.email, userDto.username, confirmationCode).catch(e=>console.log(e));
+            const user = await this.userService.signUp({ ...userDto, password: hashPassword, confirmationCode, salt });
+            await this.mailService.sendActivationMail( userDto.username, userDto.email, confirmationCode);
             return user;
         }
         catch (e) {
